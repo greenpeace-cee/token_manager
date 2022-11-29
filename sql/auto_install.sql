@@ -35,6 +35,7 @@ CREATE TABLE `civicrm_dynamic_token` (
   `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique DynamicToken ID',
   `entity_name` varchar(255) NOT NULL COMMENT 'Entity name of the token',
   `field_name` varchar(255) NOT NULL COMMENT 'Field name of the token',
+  `smarty_variable_name` varchar(255) NULL COMMENT 'Optional Smarty variable name of the token',
   `value` varchar(1000) NOT NULL COMMENT 'Value of the Token',
   `description` varchar(1000) NULL COMMENT 'Description of the Token',
   PRIMARY KEY (`id`)
