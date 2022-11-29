@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/TokenManager</base>
+  <class>DynamicToken</class>
+  <name>civicrm_dynamic_token</name>
+  <comment></comment>
+  <log>true</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Unique DynamicToken ID</comment>
+    <html>
+      <type>Number</type>
+    </html>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>entity_name</name>
+    <title>Entity Name</title>
+    <type>varchar</type>
+    <length>255</length>
+    <required>true</required>
+    <comment>Entity name of the token</comment>
+    <html>
+      <type>Text</type>
+    </html>
+  </field>
+
+  <field>
+    <name>field_name</name>
+    <title>Field Name</title>
+    <type>varchar</type>
+    <length>255</length>
+    <required>true</required>
+    <comment>Field name of the token</comment>
+    <html>
+      <type>Text</type>
+    </html>
+  </field>
+
+  <field>
+    <name>smarty_variable_name</name>
+    <title>Smarty Variable Name</title>
+    <type>varchar</type>
+    <length>255</length>
+    <required>false</required>
+    <comment>Optional Smarty variable name of the token</comment>
+    <html>
+      <type>Text</type>
+    </html>
+  </field>
+
+  <field>
+    <name>value</name>
+    <title>Token Value</title>
+    <type>varchar</type>
+    <length>1000</length>
+    <required>true</required>
+    <comment>Value of the Token</comment>
+    <html>
+      <type>Text</type>
+    </html>
+  </field>
+
+  <field>
+    <name>description</name>
+    <title>Token Description</title>
+    <type>varchar</type>
+    <length>1000</length>
+    <required>false</required>
+    <comment>Description of the Token</comment>
+    <html>
+      <type>Text</type>
+    </html>
+  </field>
+
+</table>
