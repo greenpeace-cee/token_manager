@@ -22,9 +22,6 @@ class Registry {
       return;
     }
 
-    $smarty = CRM_Core_Smarty::singleton();
-    $caseId = $smarty->get_template_vars('dynamicTokenCaseId');
-    $activityId = $smarty->get_template_vars('dynamicTokenActivityId');
     $tokenProcessor->tokenManagerEvaluating = TRUE;
     $originalSmartySetting = $tokenProcessor->context['smarty'] ?? FALSE;
     $tokenProcessor->context['smarty'] = TRUE;
@@ -33,8 +30,9 @@ class Registry {
       $dynamicTokens = \Civi\Api4\DynamicToken::get(FALSE)
         ->execute();
       foreach ($dynamicTokens as $dynamicToken) {
-        $variables = CRM_TokenManager_DynamicTokenVariables_Manager::getVariables(['caseId' => $caseId, 'activityId' => $activityId], $dynamicToken['value']);
+        $variables = CRM_TokenManager_DynamicTokenVariables_Manager::getVariables(['caseId' => $row->context['caseId'], 'activityId' => $row->context['activityId']], $dynamicToken['value']);
         if (!empty($variables)) {
+          $smarty = CRM_Core_Smarty::singleton();
           $smarty->pushScope($variables);
         }
 
