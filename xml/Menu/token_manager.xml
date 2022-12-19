@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/token-manager/dynamic-tokens</path>
+    <page_callback>CRM_TokenManager_Page_DynamicTokens</page_callback>
+    <title>DynamicTokens</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+</menu>
