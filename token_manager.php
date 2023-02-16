@@ -26,48 +26,12 @@ function token_manager_civicrm_install(): void {
 }
 
 /**
- * Implements hook_civicrm_postInstall().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_postInstall
- */
-function token_manager_civicrm_postInstall(): void {
-  _token_manager_civix_civicrm_postInstall();
-}
-
-/**
- * Implements hook_civicrm_uninstall().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_uninstall
- */
-function token_manager_civicrm_uninstall(): void {
-  _token_manager_civix_civicrm_uninstall();
-}
-
-/**
  * Implements hook_civicrm_enable().
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_enable
  */
 function token_manager_civicrm_enable(): void {
   _token_manager_civix_civicrm_enable();
-}
-
-/**
- * Implements hook_civicrm_disable().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_disable
- */
-function token_manager_civicrm_disable(): void {
-  _token_manager_civix_civicrm_disable();
-}
-
-/**
- * Implements hook_civicrm_upgrade().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_upgrade
- */
-function token_manager_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
-  return _token_manager_civix_civicrm_upgrade($op, $queue);
 }
 
 /**
@@ -94,4 +58,23 @@ function token_manager_civicrm_container(ContainerBuilder $container) {
   $container->findDefinition('dispatcher')->addMethodCall('addListener',
     ['civi.token.eval', ['\Civi\TokenManager\Registry', 'evaluate'], -100]
   )->setPublic(TRUE);
+}
+
+/**
+ * Implements hook_civicrm_navigationMenu().
+ *
+ * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_navigationMenu
+ */
+function token_manager_civicrm_navigationMenu(&$menu) {
+  _token_manager_civix_insert_navigation_menu($menu, 'Administer/System Settings', [
+    'label' => E::ts('Custom token list'),
+    'name' => 'civicrm_token-manager_dynamic_tokens',
+    'url' => 'civicrm/token-manager/dynamic-tokens',
+    'permission' => 'administer CiviCRM',
+    'operator' => 'OR',
+    'separator' => 0,
+    'icon' => 'crm-i fa-file-text',
+  ]);
+
+  _token_manager_civix_navigationMenu($menu);
 }
