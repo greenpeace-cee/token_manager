@@ -105,7 +105,6 @@ function _token_manager_civix_civicrm_config(&$config = NULL) {
 
   $include_path = $extRoot . PATH_SEPARATOR . get_include_path();
   set_include_path($include_path);
-  // Based on <compatibility>, this does not currently require mixin/polyfill.php.
 }
 
 /**
@@ -115,7 +114,35 @@ function _token_manager_civix_civicrm_config(&$config = NULL) {
  */
 function _token_manager_civix_civicrm_install() {
   _token_manager_civix_civicrm_config();
-  // Based on <compatibility>, this does not currently require mixin/polyfill.php.
+  if ($upgrader = _token_manager_civix_upgrader()) {
+    $upgrader->onInstall();
+  }
+}
+
+/**
+ * Implements hook_civicrm_postInstall().
+ *
+ * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_postInstall
+ */
+function _token_manager_civix_civicrm_postInstall() {
+  _token_manager_civix_civicrm_config();
+  if ($upgrader = _token_manager_civix_upgrader()) {
+    if (is_callable([$upgrader, 'onPostInstall'])) {
+      $upgrader->onPostInstall();
+    }
+  }
+}
+
+/**
+ * Implements hook_civicrm_uninstall().
+ *
+ * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_uninstall
+ */
+function _token_manager_civix_civicrm_uninstall(): void {
+  _token_manager_civix_civicrm_config();
+  if ($upgrader = _token_manager_civix_upgrader()) {
+    $upgrader->onUninstall();
+  }
 }
 
 /**
@@ -125,7 +152,56 @@ function _token_manager_civix_civicrm_install() {
  */
 function _token_manager_civix_civicrm_enable(): void {
   _token_manager_civix_civicrm_config();
-  // Based on <compatibility>, this does not currently require mixin/polyfill.php.
+  if ($upgrader = _token_manager_civix_upgrader()) {
+    if (is_callable([$upgrader, 'onEnable'])) {
+      $upgrader->onEnable();
+    }
+  }
+}
+
+/**
+ * (Delegated) Implements hook_civicrm_disable().
+ *
+ * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_disable
+ * @return mixed
+ */
+function _token_manager_civix_civicrm_disable(): void {
+  _token_manager_civix_civicrm_config();
+  if ($upgrader = _token_manager_civix_upgrader()) {
+    if (is_callable([$upgrader, 'onDisable'])) {
+      $upgrader->onDisable();
+    }
+  }
+}
+
+/**
+ * (Delegated) Implements hook_civicrm_upgrade().
+ *
+ * @param $op string, the type of operation being performed; 'check' or 'enqueue'
+ * @param $queue CRM_Queue_Queue, (for 'enqueue') the modifiable list of pending up upgrade tasks
+ *
+ * @return mixed
+ *   based on op. for 'check', returns array(boolean) (TRUE if upgrades are pending)
+ *   for 'enqueue', returns void
+ *
+ * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_upgrade
+ */
+function _token_manager_civix_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
+  if ($upgrader = _token_manager_civix_upgrader()) {
+    return $upgrader->onUpgrade($op, $queue);
+  }
+}
+
+/**
+ * @return CRM_TokenManager_Upgrader
+ */
+function _token_manager_civix_upgrader() {
+  if (!file_exists(__DIR__ . '/CRM/TokenManager/Upgrader.php')) {
+    return NULL;
+  }
+  else {
+    return CRM_TokenManager_Upgrader_Base::instance();
+  }
 }
 
 /**
