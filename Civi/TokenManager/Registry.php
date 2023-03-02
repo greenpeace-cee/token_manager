@@ -60,7 +60,9 @@ class Registry {
           $tokenList = json_decode($result['values']['token_values'], TRUE);
           foreach ($tokenList as $entityName => $field) {
             foreach ($field as $fieldName => $value) {
-              $row->tokens($entityName, $fieldName, $value);
+              if (!is_null($value) && $value !== '') {
+                $row->tokens($entityName, $fieldName, $value);
+              }
             }
           }
         }
