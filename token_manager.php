@@ -1,11 +1,13 @@
 <?php
 
 require_once 'token_manager.civix.php';
+require_once __DIR__ . '/vendor/autoload.php';
 // phpcs:disable
 use CRM_TokenManager_ExtensionUtil as E;
-// phpcs:enable
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+
+// phpcs:enable
 
 /**
  * Implements hook_civicrm_config().
